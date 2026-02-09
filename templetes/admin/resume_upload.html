@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Resume{% endblock %}
+{% block content %}
+
+<h2 style="margin-bottom: 30px; font-size: 28px;">Resume Management</h2>
+
+<div class="form-container">
+    <h3>Upload Resume</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="resume">PDF Resume</label>
+            <input type="file" id="resume" name="resume" accept="application/pdf" required>
+            <small style="color: var(--text-secondary);">Upload a PDF file (Max 10MB)</small>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upload Resume
+        </button>
+    </form>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h3>Current Resume</h3>
+    </div>
+    <div style="padding: 30px; text-align: center;">
+        <div style="margin-bottom: 20px;">
+            <i class="fa-solid fa-file-pdf" style="font-size: 64px; color: var(--danger-color);"></i>
+        </div>
+        <p style="color: var(--text-primary); font-weight: 600; margin-bottom: 10px;">resume.pdf</p>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+            Served from: <code style="background: rgba(99, 102, 241, 0.1); padding: 4px 8px; border-radius: 4px;">/static/resume/resume.pdf</code>
+        </p>
+        <a href="{{ url_for('static', filename='resume/resume.pdf') }}" target="_blank" class="btn btn-secondary">
+            <i class="fa-solid fa-download"></i> Download Current Resume
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+

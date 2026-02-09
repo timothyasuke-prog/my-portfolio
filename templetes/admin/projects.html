@@ -1,0 +1,78 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Projects{% endblock %}
+{% block content %}
+
+<h2 style="margin-bottom: 30px; font-size: 28px;">Manage Projects</h2>
+
+<!-- Add Project Form -->
+<div class="form-container">
+    <h3>Add New Project</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter project title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="link">Project Link</label>
+                <input type="url" id="link" name="link" placeholder="https://example.com" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Describe your project..." required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Screenshot / Image</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <small style="color: var(--text-secondary);">PNG, JPG or GIF (Max 5MB)</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+            <i class="fa-solid fa-plus"></i> Add Project
+        </button>
+    </form>
+</div>
+
+<!-- Projects List -->
+<div class="table-container">
+    <div class="table-header">
+        <h3>Existing Projects</h3>
+        <span style="color: var(--text-secondary);">{{ projects|length }} projects</span>
+    </div>
+
+    {% if projects %}
+    <div class="project-grid" style="padding: 20px;">
+        {% for p in projects %}
+        <div class="project-card">
+            <img src="{{ url_for('static', filename='images/projects/' ~ p['image']) }}" alt="{{ p['title'] }}" class="project-image">
+            <div class="project-info">
+                <div class="project-title">{{ p['title'] }}</div>
+                <div class="project-description">{{ p['description'] }}</div>
+                <div class="project-actions">
+                    <a href="{{ p['link'] }}" target="_blank" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-external-link"></i> Visit
+                    </a>
+                    <form method="POST" action="/admin/project/delete/{{ p['id'] }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return AdminPanel.confirmDelete('Delete this project?')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="padding: 60px 20px; text-align: center; color: var(--text-secondary);">
+        <i class="fa-solid fa-folder-open" style="font-size: 48px; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
+        <p>No projects yet. Add one above to get started.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+<section class="blog-section">
+    <div class="blog-container">
+        <h1>My Blog</h1>
+        <p class="blog-intro">Insights, tips, and stories from my web development journey</p>
+        
+        <div class="blog-grid">
+            {% for p in posts %}
+            <article class="blog-card fade-in">
+                {% if p.image %}
+                <div class="blog-image" style="background-image: url('{{ url_for('static', filename='images/blogs/' ~ p.image) }}'); background-size: cover; background-position: center;"></div>
+                {% else %}
+                <div class="blog-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                {% endif %}
+                <div class="blog-content">
+                    <h3>{{ p.title }}</h3>
+                    <p class="blog-date">{{ p.created_at }}</p>
+                    <p class="blog-excerpt">{{ p.excerpt }}</p>
+                    <a href="/blog/{{ p.id }}" class="read-more">Read More →</a>
+                </div>
+            </article>
+            {% else %}
+            <div style="padding:40px; text-align:center; color:#666;">No blog posts yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

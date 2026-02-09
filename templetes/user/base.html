@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASUKE TIMOTHY | Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-container">
+        <div class="logo">ASUKE TIMOTHY</div>
+
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark theme">🌗</button>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/experience">Experience</a>
+            <a href="/blog">Blog</a>
+            <a href="/portfolio">Portfolio</a>
+            <a href="/resume">Resume</a>
+            <a href="/contact">Contact</a>
+        </nav>
+    </div>
+</header>
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-social">
+            <a href="mailto:tjjune956@gmail.com" class="footer-social-btn" title="Email">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <a href="https://wa.me/01110506968" class="footer-social-btn" title="WhatsApp" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://github.com/timothyasuke-prog" class="footer-social-btn" title="GitHub" target="_blank">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://facebook.com/https://www.facebook.com/timothy.tj.694916" class="footer-social-btn" title="Facebook" target="_blank">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://instagram.com/@tj_june_956" class="footer-social-btn" title="Instagram" target="_blank">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+        </div>
+        <p>&copy; 2026 ASUKE TIMOTHY | All Rights Reserved</p>
+        <div class="footer-links">
+            <a href="/about" class="footer-btn">About</a>
+            <a href="/contact" class="footer-btn">Contact Me</a>
+            <a href="/terms" class="footer-btn">Terms</a>
+            <a href="/privacy" class="footer-btn">Privacy</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const toggle = document.getElementById("menuToggle");
+    const links = document.getElementById("navLinks");
+
+    toggle.onclick = () => {
+        links.classList.toggle("active");
+    };
+</script>
+
+<script>
+// Fade-in on scroll for elements with .fade-in
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+});
+</script>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

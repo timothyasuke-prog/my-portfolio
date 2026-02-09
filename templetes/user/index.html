@@ -1,0 +1,248 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+
+        <div class="hero-image">
+            <img class="profile-pic" src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profile picture of Asuke Timothy">
+        </div>
+
+        <div class="hero-text">
+            <h1 class="typing-name">Hello, I'm <span class="name-animated">Asuke Timothy</span></h1>
+            <h3 class="typing-role">Web Developer & Designer</h3>
+            <div class="typing-container">
+                <p class="typing-text">Crafting beautiful and functional websites.</p>
+                <div class="skills-typing">
+                    <span class="tech-skill">HTML</span>
+                    <span class="tech-skill">CSS</span>
+                    <span class="tech-skill">JavaScript</span>
+                    <span class="tech-skill">Python</span>
+                    <span class="tech-skill">Flask</span>
+                </div>
+                <div class="tech-marquee" aria-hidden="false">
+                    <div class="marquee-track">
+                        <span class="marquee-item">HTML</span>
+                        <span class="marquee-item">CSS</span>
+                        <span class="marquee-item">JavaScript</span>
+                        <span class="marquee-item">Python</span>
+                        <span class="marquee-item">Flask</span>
+                        <span class="marquee-item">Django</span>
+                        <span class="marquee-item">React</span>
+                        <span class="marquee-item">Node.js</span>
+                        <!-- duplicate for smooth loop -->
+                        <span class="marquee-item">HTML</span>
+                        <span class="marquee-item">CSS</span>
+                        <span class="marquee-item">JavaScript</span>
+                        <span class="marquee-item">Python</span>
+                        <span class="marquee-item">Flask</span>
+                    </div>
+                </div>
+            </div>
+                <div class="hero-ctas">
+                    <a href="/portfolio" class="btn-primary">View My Work</a>
+                    <a href="/follow-journey" class="btn-secondary">Follow My Journey</a>
+                </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- WHAT AM BUILDING SECTION -->
+<section class="building-section fade-in">
+    <div class="building-container">
+        <h2 class="building-title">What I'm Currently Building</h2>
+        <p class="building-subtitle">Am working on AI voice Assistant and Agent.
+            Am working on voting management system for my school. Am also working on a web app that will help people to find the best restaurants in their area based on their preferences and dietary restrictions.
+        </p>
+        
+        <div class="building-grid">
+            <div class="building-card fade-in-up">
+                <div class="building-icon">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h3>AI Web Applications</h3>
+    <section class="building-section fade-in">
+        <h2>What I'm Building</h2>
+        <p class="building-sub">Current experiments and projects I'm exploring</p>
+        <div class="building-list">
+            <div class="building-item">
+                <h4 class="build-title">AI-assisted Code Tools</h4>
+                <p class="build-typing">Exploring automation for developer productivity</p>
+            </div>
+            <div class="building-item">
+                <h4 class="build-title">Realtime Collaboration App</h4>
+                <p class="build-typing">Realtime editing + presence indicators</p>
+            </div>
+            <div class="building-item">
+                <h4 class="build-title">Performance Toolkit</h4>
+                <p class="build-typing">Tools for analyzing and improving web performance</p>
+            </div>
+        </div>
+    </section>
+                <p class="typing-tech"></p>
+            </div>
+
+            <div class="building-card fade-in-up">
+                <div class="building-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h3>Machine Learning Models</h3>
+                <p class="typing-tech"></p>
+            </div>
+
+            <div class="building-card fade-in-up">
+                <div class="building-icon">
+                    <i class="fa-solid fa-mobile"></i>
+                </div>
+                <h3>Mobile Apps</h3>
+                <p class="typing-tech"></p>
+            </div>
+
+            <div class="building-card fade-in-up">
+                <div class="building-icon">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h3>Database Systems</h3>
+                <p class="typing-tech"></p>
+            </div>
+        </div>
+
+        <div class="building-cta">
+            <a href="/follow-journey" class="btn-journey">Follow My Journey</a>
+        </div>
+    </div>
+</section>
+
+<script>
+// Typing animation for name with colors
+const nameElement = document.querySelector('.name-animated');
+const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+let colorIndex = 0;
+
+function animateNameCharacters() {
+    const text = nameElement.textContent;
+    nameElement.innerHTML = '';
+    let charIndex = 0;
+
+    function typeChar() {
+        if (charIndex < text.length) {
+            const char = document.createElement('span');
+            char.textContent = text[charIndex];
+            char.style.color = colors[colorIndex % colors.length];
+            char.className = 'animated-char';
+            nameElement.appendChild(char);
+            charIndex++;
+            colorIndex++;
+            setTimeout(typeChar, 100);
+        }
+    }
+    typeChar();
+}
+
+// Skills typing animation
+const skillsContainer = document.querySelector('.skills-typing');
+const skills = ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'];
+let skillIndex = 0;
+
+function animateSkills() {
+    const skill = skills[skillIndex];
+    const skillElement = document.createElement('span');
+    skillElement.className = 'tech-skill animated-skill';
+    
+    skillsContainer.innerHTML = '';
+    let charIndex = 0;
+
+    function typeSkill() {
+        if (charIndex < skill.length) {
+            skillElement.textContent += skill[charIndex];
+            charIndex++;
+            setTimeout(typeSkill, 50);
+        } else {
+            setTimeout(() => {
+                skillIndex = (skillIndex + 1) % skills.length;
+                animateSkills();
+            }, 2000);
+        }
+    }
+    
+    skillsContainer.appendChild(skillElement);
+    typeSkill();
+}
+
+// Building section typing animations
+const buildingTexts = {
+    'AI Web Applications': 'Building smart web solutions with AI integration',
+    'Machine Learning Models': 'Training models for real-world problems',
+    'Mobile Apps': 'Creating responsive mobile experiences',
+    'Database Systems': 'Designing scalable database architectures'
+};
+
+function initBuildingAnimations() {
+    const cards = document.querySelectorAll('.building-card');
+    cards.forEach(card => {
+        const title = card.querySelector('h3').textContent;
+        const textElement = card.querySelector('.typing-tech');
+        const text = buildingTexts[title];
+        
+        let charIndex = 0;
+        
+        function typeText() {
+            if (charIndex < text.length) {
+                textElement.textContent += text[charIndex];
+                charIndex++;
+                setTimeout(typeText, 40);
+            }
+        }
+        
+        // Start typing when card is visible
+        setTimeout(typeText, 100);
+    });
+}
+
+// Scroll fade-in animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.fade-in, .fade-in-up').forEach(el => {
+    observer.observe(el);
+});
+
+// Heart animation on button click
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-primary') || e.target.closest('.btn-journey') || e.target.closest('.social-btn') || e.target.closest('button')) {
+        createHearts(e);
+    }
+});
+
+function createHearts(e) {
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = '❤';
+    heart.style.left = e.clientX + 'px';
+    heart.style.top = e.clientY + 'px';
+    document.body.appendChild(heart);
+    
+    setTimeout(() => heart.remove(), 1000);
+}
+
+// Initialize animations
+window.addEventListener('load', () => {
+    animateNameCharacters();
+    animateSkills();
+    initBuildingAnimations();
+});
+</script>
+
+{% endblock %}

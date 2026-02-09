@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Messages{% endblock %}
+{% block content %}
+
+<h2 style="margin-bottom: 30px; font-size: 28px;">Messages</h2>
+
+<div class="table-container">
+    <div class="table-header">
+        <h3>All Messages</h3>
+        <span style="color: var(--text-secondary);">{{ messages|length }} messages</span>
+    </div>
+
+    {% if messages %}
+    <div style="max-height: 900px; overflow-y: auto;">
+        {% for m in messages %}
+        <div class="message-item">
+            <div class="message-header">
+                <div>
+                    <div class="message-sender">{{ m.name }}</div>
+                    <div class="message-email">{{ m.email }}</div>
+                </div>
+                <div class="message-time">{{ m.created_at }}</div>
+            </div>
+            <div class="message-text">{{ m.message }}</div>
+            <div class="message-actions">
+                <form method="POST" action="/admin/message/delete/{{ m.id }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return AdminPanel.confirmDelete('Delete this message?')">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="padding: 60px 20px; text-align: center; color: var(--text-secondary);">
+        <i class="fa-solid fa-envelope-open" style="font-size: 48px; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
+        <p>No messages yet. Visitors can send you messages from the contact page.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+

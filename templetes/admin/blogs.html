@@ -1,0 +1,69 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Blogs{% endblock %}
+{% block content %}
+
+<h2 class="manage-blogs-title">Manage Blogs</h2>
+
+<div class="form-container">
+    <h3>Add New Blog Post</h3>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="excerpt">Excerpt</label>
+            <input type="text" id="excerpt" name="excerpt" placeholder="Short summary shown on cards">
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="8" required placeholder="Full blog content..."></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image">Cover Image</label>
+            <input type="file" id="image" name="image" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label for="link">External Link (optional)</label>
+            <input type="url" id="link" name="link" placeholder="https://...">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Publish</button>
+    </form>
+</div>
+
+<div class="table-container table-container-spaced">
+    <div class="table-header">
+        <h3>Existing Posts</h3>
+        <span class="text-secondary">{{ posts|length }} posts</span>
+    </div>
+
+    {% if posts %}
+    <div class="project-grid project-grid-padded">
+        {% for p in posts %}
+        <div class="project-card">
+            {% if p.image %}
+            <img src="{{ url_for('static', filename='images/blogs/' ~ p.image) }}" alt="{{ p.title }}" class="project-image">
+            {% else %}
+            <div class="project-image project-image-gradient"></div>
+            {% endif %}
+            <div class="project-info">
+                <div class="project-title">{{ p.title }}</div>
+                <div class="project-description">{{ p.excerpt }}</div>
+                <div class="project-actions">
+                    <a href="/blog/{{ p.id }}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-eye"></i> View</a>
+                    <form method="POST" action="/admin/blog/delete/{{ p.id }}" class="form-inline">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return AdminPanel.confirmDelete('Delete this post?')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">No blog posts yet.</div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+<section class="blog-post-section">
+    <div class="blog-post-container">
+        <article class="blog-full-card">
+            {% if post.image %}
+            <img src="{{ url_for('static', filename='images/blogs/' ~ post.image) }}" alt="{{ post.title }}" class="blog-full-image">
+            {% else %}
+            <div class="blog-full-image" style="background: linear-gradient(135deg,#667eea,#764ba2);"></div>
+            {% endif %}
+
+            <div class="blog-full-content">
+                <h1>{{ post.title }}</h1>
+                <p class="blog-date">{{ post.created_at }}</p>
+                <div class="blog-body">{{ post.content }}</div>
+                <div style="margin-top:20px;">
+                    <a href="/blog" class="btn btn-secondary">← Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+{% endblock %}

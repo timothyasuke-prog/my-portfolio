@@ -1,0 +1,108 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Analytics{% endblock %}
+{% block content %}
+
+<h2 style="margin-bottom: 30px; font-size: 28px;">Site Analytics</h2>
+
+<!-- Real-time Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fa-solid fa-eye"></i>
+        </div>
+        <div class="stat-label">Total Visits</div>
+        <div class="stat-value" id="stat-total">{{ stats.total }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fa-solid fa-calendar-day"></i>
+        </div>
+        <div class="stat-label">Today</div>
+        <div class="stat-value" id="stat-today">{{ stats.today }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fa-solid fa-calendar-week"></i>
+        </div>
+        <div class="stat-label">This Week</div>
+        <div class="stat-value" id="stat-week">{{ stats.week }}</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="stat-label">This Month</div>
+        <div class="stat-value" id="stat-month">{{ stats.month }}</div>
+    </div>
+</div>
+
+<!-- Analytics Info -->
+<div class="table-container">
+    <div class="table-header">
+        <h3>Live Updates</h3>
+        <span style="color: var(--accent-color); font-weight: 600;">
+            <i class="fa-solid fa-circle" style="font-size: 8px; margin-right: 5px; animation: pulse 1s infinite;"></i> Active
+        </span>
+    </div>
+    <div style="padding: 30px; text-align: center; color: var(--text-secondary);">
+        <i class="fa-solid fa-clock" style="font-size: 48px; margin-bottom: 15px; display: block; opacity: 0.5;"></i>
+        <p>Real-time visit statistics update every 2 seconds from your deployed site.</p>
+        <p style="font-size: 13px; margin-top: 10px;">The stats above are live. Check back after visiting your portfolio!</p>
+    </div>
+</div>
+
+<script>
+// Listen for server-sent events with live stats
+if (window.EventSource) {
+    const es = new EventSource('/admin/stream-stats');
+    
+    es.onmessage = function(e) {
+        try {
+            const data = JSON.parse(e.data);
+            
+            // Update stat values with animation
+            updateStatValue('stat-total', data.total);
+            updateStatValue('stat-today', data.today);
+            updateStatValue('stat-week', data.week);
+            updateStatValue('stat-month', data.month);
+        } catch (err) { 
+            console.error('Error parsing stats:', err); 
+        }
+    };
+    
+    es.onerror = function() {
+        console.log('EventSource connection closed or error occurred');
+    };
+    
+    // Function to update stat values with visual feedback
+    function updateStatValue(elementId, newValue) {
+        const element = document.getElementById(elementId);
+        if (element && element.textContent != newValue) {
+            element.textContent = newValue;
+            element.style.animation = 'none';
+            setTimeout(() => {
+                element.style.animation = 'pulse 0.5s ease-in-out';
+            }, 10);
+        }
+    }
+}
+</script>
+
+<style>
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+</style>
+
+{% endblock %}
+
