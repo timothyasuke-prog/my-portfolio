@@ -293,14 +293,15 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
 
 /* NAVBAR */
 .navbar {
-    background: #2f3e4e;
+    background: linear-gradient(135deg, rgba(47, 62, 78, 0.95), rgba(31, 42, 55, 0.95));
     padding: 12px 0;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
 }
 
 .nav-container {
@@ -310,12 +311,14 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
 }
 
 .logo {
     color: white;
     font-size: 20px;
     font-weight: bold;
+    flex: 1;
 }
 
 .nav-links {
@@ -326,6 +329,13 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
 .nav-links a {
     color: white;
     text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #6EE7F7;
+    text-shadow: 0 0 10px rgba(110, 231, 247, 0.5);
 }
 
 .menu-toggle {
@@ -333,6 +343,32 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
     font-size: 26px;
     color: white;
     cursor: pointer;
+    background: linear-gradient(135deg, #6EE7F7, #9F7AEA);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(110, 231, 247, 0.3);
+}
+
+.menu-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(110, 231, 247, 0.5);
+}
+
+.menu-toggle[aria-expanded="true"] {
+    background: linear-gradient(135deg, #FF7AB6, #9F7AEA);
+    box-shadow: 0 4px 16px rgba(255, 122, 182, 0.5);
+    transform: rotate(90deg) scale(1.05);
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 2px 8px rgba(110, 231, 247, 0.3); }
+    50% { box-shadow: 0 4px 16px rgba(110, 231, 247, 0.6); }
+}
+
+.menu-toggle:active {
+    animation: pulse-glow 0.6s ease-in-out;
 }
 
 /* Make sure page content isn't hidden behind fixed navbar */
@@ -1013,27 +1049,38 @@ body { padding-top: 64px; }
     .menu-toggle {
         display: block;
         position: absolute;
-        right: 20px;
+        right: 15px;
         top: 14px;
     }
 
     .nav-links {
         display: none;
         flex-direction: column;
-        background: #2f3e4e;
+        background: linear-gradient(135deg, rgba(47, 62, 78, 0.98), rgba(31, 42, 55, 0.98));
         position: absolute;
         top: 60px;
-        right: 20px;
-        padding: 20px;
-        border-radius: 6px;
-        min-width: 200px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        right: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        min-width: 220px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px rgba(110, 231, 247, 0.15);
         z-index: 1000;
+        border: 1px solid rgba(110, 231, 247, 0.2);
+        backdrop-filter: blur(10px);
     }
 
     .nav-links a {
-        padding: 10px 0;
+        padding: 12px 0;
         display: block;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: #6EE7F7;
+        padding-left: 8px;
+        text-shadow: 0 0 10px rgba(110, 231, 247, 0.5);
     }
 
     .nav-links.active {

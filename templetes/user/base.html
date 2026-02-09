@@ -14,7 +14,7 @@
     <div class="nav-container">
         <div class="logo">ASUKE TIMOTHY</div>
 
-        <div class="menu-toggle" id="menuToggle">☰</div>
+        <button id="menuToggle" class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" title="Navigation Menu">☰</button>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark theme">🌗</button>
 
         <nav class="nav-links" id="navLinks">
@@ -63,10 +63,29 @@
 <script>
     const toggle = document.getElementById("menuToggle");
     const links = document.getElementById("navLinks");
+    const navLinks = document.querySelectorAll(".nav-links a");
 
+    // Toggle menu
     toggle.onclick = () => {
-        links.classList.toggle("active");
+        const isActive = links.classList.toggle("active");
+        toggle.setAttribute("aria-expanded", isActive);
     };
+
+    // Close menu when a link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            links.classList.remove("active");
+            toggle.setAttribute("aria-expanded", "false");
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!event.target.closest(".nav-container")) {
+            links.classList.remove("active");
+            toggle.setAttribute("aria-expanded", "false");
+        }
+    });
 </script>
 
 <script>
