@@ -5,6 +5,12 @@
     font-family: "Segoe UI", sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 /* Theme variables (light by default) */
 :root {
     --bg: #0f1724;
@@ -570,7 +576,7 @@ body { padding-top: 64px; }
     padding: 14px 16px;
     border: 2px solid #e0e6ed;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 16px;
     font-family: inherit;
     transition: all 0.3s ease;
     background: #f8f9fb;
