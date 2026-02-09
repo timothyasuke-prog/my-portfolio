@@ -31,6 +31,12 @@ body.dark-mode {
     --muted: rgba(230,238,248,0.8);
 }
 
+/* Serif / alternate font theme: when `.serif-font` is present on body */
+body.serif-font,
+body[data-theme="serif"] {
+    font-family: "Georgia", "Times New Roman", serif;
+}
+
 /* Animated glowing gradient background applied globally and to hero */
 body, .hero {
     background: radial-gradient(1200px 600px at 10% 10%, rgba(159,122,234,0.12), transparent 8%),

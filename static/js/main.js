@@ -1,33 +1,44 @@
 // Main UI interactions: theme toggle, marquee control, small UI glows
-(function(){
-	const themeToggle = document.getElementById('themeToggle');
-	const body = document.body;
+ (function(){
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const THEMES = ['light', 'dark', 'serif'];
 
-	function applyTheme(name) {
-		if (name === 'dark') {
-			body.classList.add('dark-mode');
-			if (themeToggle) themeToggle.textContent = '🌙';
-		} else {
-			body.classList.remove('dark-mode');
-			if (themeToggle) themeToggle.textContent = '🌗';
-		}
-	}
+    function applyTheme(name){
+        // keep backwards compatibility via class
+        if (name === 'dark') body.classList.add('dark-mode'); else body.classList.remove('dark-mode');
+        if (name === 'serif') body.classList.add('serif-font'); else body.classList.remove('serif-font');
+        // store as dataset for easy querying
+        body.dataset.theme = name;
 
-	// initialize from localStorage or prefers-color-scheme
-	const stored = localStorage.getItem('site-theme');
-	if (stored) applyTheme(stored);
-	else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
+        if (themeToggle){
+            if (name === 'dark') themeToggle.textContent = '🌙';
+            else if (name === 'serif') themeToggle.textContent = '🔤';
+            else themeToggle.textContent = '🌗';
+            themeToggle.setAttribute('aria-pressed', String(name !== 'light'));
+        }
+    }
 
-	if (themeToggle) {
-		themeToggle.addEventListener('click', () => {
-			const isDark = body.classList.toggle('dark-mode');
-			localStorage.setItem('site-theme', isDark ? 'dark' : 'light');
-			applyTheme(isDark ? 'dark' : 'light');
-		});
-	}
+    // initialize from localStorage or prefers-color-scheme
+    (function initTheme(){
+        const stored = localStorage.getItem('site-theme');
+        if (stored && THEMES.includes(stored)) return applyTheme(stored);
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return applyTheme('dark');
+        applyTheme('light');
+    })();
 
-	// Add a decorative glow layer in hero if missing
-	window.addEventListener('load', () => {
+    if (themeToggle){
+        themeToggle.addEventListener('click', () => {
+            const current = body.dataset.theme || 'light';
+            const idx = Math.max(0, THEMES.indexOf(current));
+            const next = THEMES[(idx + 1) % THEMES.length];
+            applyTheme(next);
+            localStorage.setItem('site-theme', next);
+        });
+    }
+
+    // Add a decorative glow layer in hero if missing
+    window.addEventListener('load', () => {
 		const hero = document.querySelector('.hero');
 		if (hero && !hero.querySelector('.glow-anim')) {
 			const glow = document.createElement('div');
