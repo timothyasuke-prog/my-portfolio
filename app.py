@@ -50,6 +50,26 @@ except Exception:
     # If get_db isn't available yet or DB cannot be opened, skip; init_db.py will create it.
     pass
 
+# Ensure feedback table exists
+try:
+    db_conn = get_db()
+    db_conn.execute('''
+        CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            rating INTEGER NOT NULL,
+            message TEXT,
+            notify INTEGER DEFAULT 0,
+            is_read INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    db_conn.commit()
+    db_conn.close()
+except Exception:
+    pass
+
 
 # --------------------
 # VISITOR TRACKING
@@ -107,6 +127,25 @@ def contact():
         return redirect(url_for("contact"))
 
     return render_template("user/contact.html")
+
+
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if request.method == 'POST':
+        db = get_db()
+        name = request.form.get('name')
+        email = request.form.get('email')
+        rating = int(request.form.get('rating', 5))
+        message = request.form.get('message') or ''
+        notify = 1 if request.form.get('notify') == '1' else 0
+        db.execute(
+            'INSERT INTO feedback (name, email, rating, message, notify) VALUES (?, ?, ?, ?, ?)',
+            (name, email, rating, message, notify),
+        )
+        db.commit()
+        return redirect(url_for('feedback'))
+
+    return render_template('user/feedback.html')
 
 
 @app.route("/terms")
@@ -263,6 +302,38 @@ def admin_messages():
     db = get_db()
     messages = db.execute("SELECT * FROM messages ORDER BY created_at DESC").fetchall()
     return render_template("admin/massages.html", messages=messages)
+
+
+@app.route('/admin/notifications')
+@login_required
+def admin_notifications():
+    db = get_db()
+    rows = db.execute('SELECT * FROM feedback ORDER BY created_at DESC').fetchall()
+    # Convert sqlite Row objects to dict-like for template
+    feedbacks = [dict(row) for row in rows]
+    return render_template('admin/notifications.html', feedbacks=feedbacks)
+
+
+@app.route('/admin/notification/mark/<int:id>', methods=['POST'])
+@login_required
+def admin_notification_mark(id):
+    db = get_db()
+    row = db.execute('SELECT is_read FROM feedback WHERE id = ?', (id,)).fetchone()
+    if row is None:
+        return redirect(url_for('admin_notifications'))
+    new_state = 0 if row['is_read'] else 1
+    db.execute('UPDATE feedback SET is_read = ? WHERE id = ?', (new_state, id))
+    db.commit()
+    return redirect(url_for('admin_notifications'))
+
+
+@app.route('/admin/notification/delete/<int:id>', methods=['POST'])
+@login_required
+def admin_notification_delete(id):
+    db = get_db()
+    db.execute('DELETE FROM feedback WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('admin_notifications'))
 
 
 @app.route("/admin/message/delete/<int:id>", methods=["POST"])

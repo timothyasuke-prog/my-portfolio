@@ -1,0 +1,74 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+<section class="contact-section feedback-section fade-in">
+    <div class="contact-hero">
+        <h1>Send Feedback</h1>
+        <p class="contact-subtitle">Rate your experience and leave a message. Your feedback helps me improve.</p>
+    </div>
+
+    <div class="message-form-section">
+        <div class="message-form-header">
+            <h2>Feedback</h2>
+            <p>Give a star rating and optionally receive notifications about replies or updates.</p>
+        </div>
+
+        <form class="contact-form" method="POST" action="/feedback">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Rating</label>
+                <div class="star-rating" data-value="5">
+                    <span class="star" data-value="1">☆</span>
+                    <span class="star" data-value="2">☆</span>
+                    <span class="star" data-value="3">☆</span>
+                    <span class="star" data-value="4">☆</span>
+                    <span class="star" data-value="5">☆</span>
+                </div>
+                <input type="hidden" name="rating" id="rating" value="5">
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message (optional)</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="notify" value="1"> I want to receive notifications about replies or updates
+                </label>
+            </div>
+
+            <button type="submit" class="btn-send">Send Feedback</button>
+        </form>
+    </div>
+</section>
+
+<script>
+// Star rating UI
+document.addEventListener('DOMContentLoaded', function(){
+    const stars = document.querySelectorAll('.star-rating .star');
+    const input = document.getElementById('rating');
+    function setRating(val){
+        input.value = val;
+        stars.forEach(s => {
+            const v = parseInt(s.dataset.value,10);
+            s.textContent = v <= val ? '★' : '☆';
+            s.classList.toggle('active', v <= val);
+        });
+    }
+    stars.forEach(s => s.addEventListener('click', ()=> setRating(parseInt(s.dataset.value,10))));
+    // initialize
+    setRating(5);
+});
+</script>
+
+{% endblock %}

@@ -198,6 +198,26 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
     100% { transform: translate3d(0,0,0) rotate(360deg); }
 }
 
+/* Feedback form - stars */
+.feedback-section .star-rating { display:flex; gap:8px; font-size:28px; cursor:pointer; }
+.feedback-section .star { color: rgba(0,0,0,0.15); transition: transform 0.18s ease, color 0.12s ease; }
+.feedback-section .star.active { color: #FFB84D; transform: scale(1.12); text-shadow: 0 6px 18px rgba(255,184,77,0.12); }
+.feedback-section .btn-send { background: linear-gradient(135deg, #4f46e5, #6ee7f7); color: white; }
+
+/* Admin notifications list */
+.notification-list { margin-top: 18px; }
+.notification-list ul { list-style:none; padding:0; display:flex; flex-direction:column; gap:12px; }
+.notification-item { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:16px; border-radius:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.notification-item.unread { border-left: 4px solid var(--accent-1); box-shadow: 0 12px 30px rgba(110,231,247,0.06); }
+.notification-item .notif-main p { margin:8px 0; color: var(--muted); }
+.notification-item .notif-actions { display:flex; gap:8px; align-items:center; }
+.notification-item .btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: var(--text); padding:8px 10px; border-radius:8px; }
+.notification-item .btn-danger { background: linear-gradient(135deg,#ff6b6b,#c91a1a); color:white; border:0; padding:8px 10px; border-radius:8px; }
+
+/* Small animation for admin card */
+.notifications-cards .admin-card { animation: cardPop 0.45s ease; }
+@keyframes cardPop { from { transform: translateY(6px) scale(0.99); opacity:0 } to { transform:none; opacity:1 } }
+
 /* Ensure high-contrast text on top of colorful background */
 .hero-content, .hero-text, .hero-image { position: relative; z-index: 2; }
 

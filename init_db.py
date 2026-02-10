@@ -60,6 +60,20 @@ def init_db():
             visit_date DATE NOT NULL
         )
     ''')
+
+    # Create feedback table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            rating INTEGER NOT NULL,
+            message TEXT,
+            notify INTEGER DEFAULT 0,
+            is_read INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     
     # Insert default admin user if it doesn't exist
     try:

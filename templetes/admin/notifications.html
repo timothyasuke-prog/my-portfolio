@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block page_title %}Notifications{% endblock %}
+{% block content %}
+
+<div class="admin-cards notifications-cards">
+    <div class="admin-card">
+        <h4>Feedback</h4>
+        <p class="muted">Manage incoming feedback and user notification preferences.</p>
+    </div>
+</div>
+
+<div class="notification-list">
+    {% if feedbacks %}
+        <ul>
+            {% for f in feedbacks %}
+            <li class="notification-item {% if not f['is_read'] %}unread{% endif %}">
+                <div class="notif-main">
+                    <strong>{{ f['name'] }}</strong> — <small>{{ f['email'] }}</small>
+                    <div class="rating">{% for i in range(f['rating']) %}★{% endfor %}</div>
+                    <p>{{ f['message'] }}</p>
+                    <small class="muted">{{ f['created_at'] }}</small>
+                </div>
+                <div class="notif-actions">
+                    <form method="post" action="/admin/notification/mark/{{ f['id'] }}">
+                        <button type="submit" class="btn-secondary">{% if f['is_read'] %}Mark Unread{% else %}Mark Read{% endif %}</button>
+                    </form>
+                    <form method="post" action="/admin/notification/delete/{{ f['id'] }}" onsubmit="return confirm('Delete this feedback?');">
+                        <button type="submit" class="btn-danger">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No feedback yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
