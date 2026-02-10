@@ -14,6 +14,7 @@ from config import Config
 from utils.db import get_db
 from utils.visitor_counter import track_visit
 from utils.auth import login_required
+from utils.email import send_email_smtp
 from flask import Response
 
 app = Flask(__name__, template_folder='templetes')
@@ -143,6 +144,24 @@ def feedback():
             (name, email, rating, message, notify),
         )
         db.commit()
+        # Send admin alert email if configured
+        try:
+            if app.config.get('ENABLE_ADMIN_EMAIL_ALERTS') and app.config.get('ADMIN_EMAIL'):
+                subject = f"New feedback from {name} — {rating}★"
+                body = f"Name: {name}\nEmail: {email}\nRating: {rating}\nNotify: {bool(notify)}\n\nMessage:\n{message}"
+                send_email_smtp(subject, app.config.get('ADMIN_EMAIL'), body)
+        except Exception:
+            pass
+
+        # If user opted to receive notifications, send confirmation email (if SMTP configured)
+        if notify and email:
+            try:
+                subject = "Thanks for your feedback"
+                body = f"Hi {name},\n\nThanks for your feedback. We'll get back to you if necessary.\n\n— Team"
+                send_email_smtp(subject, email, body)
+            except Exception:
+                pass
+
         return redirect(url_for('feedback'))
 
     return render_template('user/feedback.html')
@@ -294,6 +313,16 @@ def admin_dashboard():
         messages=messages,
         stats=stats,
     )
+
+
+@app.context_processor
+def inject_unread_feedback_count():
+    try:
+        db = get_db()
+        row = db.execute('SELECT COUNT(*) as cnt FROM feedback WHERE is_read = 0').fetchone()
+        return {'unread_feedback_count': row['cnt'] if row else 0}
+    except Exception:
+        return {'unread_feedback_count': 0}
 
 
 @app.route("/admin/messages")

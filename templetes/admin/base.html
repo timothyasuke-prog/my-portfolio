@@ -45,6 +45,9 @@
                     <a href="/admin/notifications">
                         <i class="fa-solid fa-bell"></i>
                         <span>Notifications</span>
+                        {% if unread_feedback_count and unread_feedback_count > 0 %}
+                        <span class="notif-badge">{{ unread_feedback_count }}</span>
+                        {% endif %}
                     </a>
                 </li>
                 <li class="menu-item">

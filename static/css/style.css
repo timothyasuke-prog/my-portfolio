@@ -218,6 +218,18 @@ h1, h2, h3, h4, h5, h6, p, a, label, small, .typing-text, .typing-role, .message
 .notifications-cards .admin-card { animation: cardPop 0.45s ease; }
 @keyframes cardPop { from { transform: translateY(6px) scale(0.99); opacity:0 } to { transform:none; opacity:1 } }
 
+/* small badge on admin sidebar */
+.notif-badge {
+    display:inline-block;
+    background: var(--accent-1);
+    color: #002; 
+    font-weight:700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left:8px;
+    font-size:12px;
+}
+
 /* Ensure high-contrast text on top of colorful background */
 .hero-content, .hero-text, .hero-image { position: relative; z-index: 2; }
 
